@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B-Move App</title>
+    <style>
+        :root {
+            --primary-blue: #6ba2e6;
+            --primary-dark: #4a82ca;
+            --bg-light: #f4f8fc;
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --border-color: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px 0; }
+        .mobile-frame { width: 380px; height: 780px; background-color: var(--bg-light); border-radius: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; position: relative; border: 8px solid #0f172a; }
+        .status-bar { height: 30px; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: bold; color: #333; }
+        .splash-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, #ffffff 60%, #dbeafe 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 500; transition: opacity 0.5s ease; }
+        .logo-b { font-size: 110px; font-weight: 900; color: var(--primary-blue); font-style: italic; line-height: 1; position: relative; }
+        .brand-name { font-size: 32px; font-weight: bold; color: var(--primary-blue); margin-top: 10px; }
+        .brand-slogan { font-size: 14px; color: var(--text-sub); margin-top: 8px; }
+        .login-screen { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, #ffffff 70%, #dbeafe 100%); padding: 40px 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 400; }
+        .form-group { width: 100%; margin-bottom: 15px; }
+        .form-input { width: 100%; padding: 14px 20px; border: 1px solid var(--border-color); border-radius: 25px; background-color: #fff; font-size: 13px; outline: none; }
+        .role-selector { width: 100%; padding: 12px; border-radius: 20px; border: 1px solid var(--border-color); background-color: white; font-size: 13px; margin-bottom: 20px; outline: none; }
+        .btn-primary { width: 100%; padding: 14px; background-color: var(--primary-blue); color: white; border: none; border-radius: 25px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        .app-view { display: flex; flex-direction: column; height: 100%; width: 100%; }
+        .app-header { padding: 10px 20px; background-color: var(--bg-light); display: flex; justify-content: space-between; align-items: center; }
+        .app-body { flex: 1; padding: 15px 20px; overflow-y: auto; }
+        .card { background: white; border-radius: 18px; padding: 15px; margin-bottom: 12px; border: 1px solid #f1f5f9; }
+        .bottom-nav { height: 65px; background-color: white; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid var(--border-color); }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; color: var(--text-sub); font-size: 10px; cursor: pointer; border: none; background: none; }
+        .nav-btn.active { color: var(--primary-blue); font-weight: bold; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .stat-card { background: white; padding: 12px; border-radius: 15px; text-align: center; }
+        .stat-val { font-size: 20px; font-weight: bold; color: var(--primary-blue); }
+        .stat-lbl { font-size: 11px; color: var(--text-sub); }
+    </style>
+</head>
+<body>
+
+<div class="mobile-frame">
+    <div class="status-bar"><span>9:41</span><span>📶 🔋</span></div>
+
+    <div id="splashScreen" class="splash-screen">
+        <div style="position: relative;">
+            <span style="position: absolute; top: -15px; right: -10px; font-size: 40px; transform: rotate(-15deg);">🎓</span>
+            <div class="logo-b">B</div>
+        </div>
+        <div class="brand-name">B-Move</div>
+        <div class="brand-slogan">شاركي، بادري، اصنعي أثراً.</div>
+    </div>
+
+    <div id="loginScreen" class="login-screen">
+        <div style="text-align: center; margin-bottom: 25px;">
+            <div style="font-size: 45px; font-weight: bold; color: var(--primary-blue);">B</div>
+            <div style="font-size: 20px; font-weight: bold; color: var(--primary-blue);">B-Move</div>
+            <div style="font-size: 11px; color: var(--text-sub);">شاركي، بادري، اصنعي أثراً.</div>
+            <div style="font-size: 16px; font-weight: bold; margin-top: 15px;">مرحباً بكِ في B-Move</div>
+        </div>
+
+        <div class="form-group"><input type="text" class="form-input" value="بسمة هوساوي"></div>
+        <div class="form-group"><input type="password" class="form-input" value="••••••••"></div>
+
+        <select id="roleSelect" class="role-selector">
+            <option value="student">👩🏻‍🎓 دخول بصلاحية: طالبة</option>
+            <option value="teacher">👩🏻‍🏫 دخول بصلاحية: معلمة</option>
+            <option value="admin">👩🏻‍💼 دخول بصلاحية: إدارة</option>
+        </select>
+
+        <button class="btn-primary" onclick="login()">تسجيل الدخول</button>
+    </div>
+
+    <div id="appView" class="app-view" style="display: none;">
+        <div class="app-header">
+            <div>
+                <div id="headerUserName" style="font-size: 15px; font-weight: bold;">بسمة هوساوي</div>
+                <div id="headerUserRole" style="font-size: 11px; color: var(--text-sub);">طالبة</div>
+            </div>
+            <div style="cursor: pointer;" onclick="logout()">🚪</div>
+        </div>
+
+        <div id="appBody" class="app-body"></div>
+
+        <div id="bottomNav" class="bottom-nav"></div>
+    </div>
+</div>
+
+<script>
+    setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        splash.style.opacity = '0';
+        setTimeout(() => splash.style.display = 'none', 500);
+    }, 2000);
+
+    let currentRole = 'student';
+
+    function login() {
+        currentRole = document.getElementById('roleSelect').value;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('appView').style.display = 'flex';
+        renderNav();
+        loadTab('home');
+    }
+
+    function logout() {
+        document.getElementById('appView').style.display = 'none';
+        document.getElementById('loginScreen').style.display = 'flex';
+    }
+
+    function renderNav() {
+        const nav = document.getElementById('bottomNav');
+        if (currentRole === 'student') {
+            nav.innerHTML = `
+                <button class="nav-btn active" onclick="loadTab('home')">🏠<br>الرئيسية</button>
+                <button class="nav-btn" onclick="loadTab('activities')">📅<br>الأنشطة</button>
+                <button class="nav-btn" onclick="loadTab('contests')">🏆<br>المسابقات</button>
+                <button class="nav-btn" onclick="loadTab('volunteer')">🤝<br>التطوع</button>
+                <button class="nav-btn" onclick="loadTab('profile')">👤<br>ملفي</button>
+            `;
+        } else {
+            nav.innerHTML = `<button class="nav-btn active" onclick="loadTab('home')">🏠<br>الرئيسية</button>`;
+        }
+    }
+
+    function loadTab(tab) {
+        const body = document.getElementById('appBody');
+        if (tab === 'profile') {
+            body.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-val">12</div><div class="stat-lbl">المشاركات</div></div>
+                    <div class="stat-card"><div class="stat-val">4</div><div class="stat-lbl">سلوك متميز</div></div>
+                    <div class="stat-card"><div class="stat-val">60</div><div class="stat-lbl">إجمالي النقاط</div></div>
+                    <div class="stat-card"><div class="stat-val">15</div><div class="stat-lbl">ساعات التطوع</div></div>
+                </div>
+                <div class="card"><b>سجل الإنجازات</b><br><small>ورشة الذكاء الاصطناعي (+10)</small></div>
+            `;
+        } else {
+            body.innerHTML = `<div class="card"><b>قسم ${tab}</b><p>الفعاليات والأنشطة القادمة تظهر هنا.</p></div>`;
+        }
+    }
+</script>
+
+</body>
+  </html>
+  
